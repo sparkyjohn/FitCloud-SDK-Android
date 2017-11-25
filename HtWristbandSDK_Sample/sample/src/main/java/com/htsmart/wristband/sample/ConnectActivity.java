@@ -109,14 +109,14 @@ public class ConnectActivity extends AppCompatActivity {
         } else {
             mDeviceConnector.connectWithBind(mBluetoothDevice, MyApplication.getInstance().getUser());
         }
-        mStateTv.setText(R.string.connecting);
+        mStateTv.setText("Connecting to " + mBluetoothDevice.getName() + "...");
         updateConnectBtn(true, false);
     }
 
     private ConnectorListener mConnectorListener = new ConnectorListener() {
         @Override
         public void onConnect(WristbandConfig config) {
-            mStateTv.setText(R.string.connect);
+            mStateTv.setText("Connected to " + mBluetoothDevice.getName());
             updateConnectBtn(false, true);
             mWristbandConfig = config;
             Log.e(TAG, "WristbandConfig:" + Arrays.toString(config.getBytes()));
@@ -126,7 +126,7 @@ public class ConnectActivity extends AppCompatActivity {
 
         @Override
         public void onDisconnect(final boolean b, final boolean b1) {
-            mStateTv.setText(R.string.disconnect);
+            mStateTv.setText(R.string.disconnected);
             updateConnectBtn(true, true);
         }
 
@@ -281,19 +281,28 @@ public class ConnectActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_text1) {
-            new AlertDialog.Builder(this)
-                    .setTitle(R.string.dialog_clear_bond_title)
-                    .setMessage(R.string.dialog_clear_bond_msg)
-                    .setNegativeButton(R.string.dialog_cancel, null)
-                    .setPositiveButton(R.string.dialog_sure, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            setUserBound(false);
-                        }
-                    }).create().show();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+       switch (item.getItemId()) {
+           case R.id.menu_text1:
+               new AlertDialog.Builder(this)
+                       .setTitle(R.string.dialog_clear_bond_title)
+                       .setMessage(R.string.dialog_clear_bond_msg)
+                       .setNegativeButton(R.string.dialog_cancel, null)
+                       .setPositiveButton(R.string.dialog_sure, new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialog, int which) {
+                               setUserBound(false);
+                           }
+                       }).create().show();
+               break;
+           case (R.id.menu_scan):
+               startActivity(new Intent(this, MainActivity.class));
+               break;
+           case (R.id.debug):
+               startActivity(new Intent(this, DebugActivity.class));
+               break;
+           default:
+               return super.onOptionsItemSelected(item);
+       }
+       return true;
     }
 }

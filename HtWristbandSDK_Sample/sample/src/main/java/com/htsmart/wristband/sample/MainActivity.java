@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Scanner
      */
-    private IDeviceScanner mDeviceScanner = MyApplication.getDeviceScanner();
+    private IDeviceScanner mDeviceScanner = MyApplication.getDeviceScanner(); // Todo: What is MyApplication???
 
     /**
      * Views and Datas
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         initView();
 
-        //Add ScannerListener in onCreate. And you should Remove ScannerListener int onDestroy.
+        // Add ScannerListener in onCreate. And you should Remove ScannerListener int onDestroy.
         mDeviceScanner.addScannerListener(mScannerListener);
 
         AndPermission
@@ -90,12 +91,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
+
+        // Kick it off already!
+        startScanning();
+
     }
 
     private static final int REQUEST_PERMISSION_CODE = 1;
 
     /**
-     * Judge whether the device is  already exists in the list.
+     * Judge whether the device already exists in the list.
      *
      * @param wrapDevice device
      * @return True indicates in the list. False not.
@@ -119,8 +124,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onScan(ScanDeviceWrapper scanDeviceWrapper) {
             if (!existDevice(scanDeviceWrapper)) {
-                mDevices.add(scanDeviceWrapper);
-                mAdapter.notifyDataSetChanged();
+                String name = scanDeviceWrapper.getDevice().getName();
+                // Filter out devices not beginning with "H"
+                if (name != null && name.substring(0,1).equals("H")) {
+                    Log.d("jmv126", name);
+                    mDevices.add(scanDeviceWrapper);
+                    mAdapter.notifyDataSetChanged();
+                }
             }
         }
 
@@ -152,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 BluetoothDevice device = mDevices.get(i).getDevice();
                 Intent intent;
-                if (BuildConfig.RXJAVA) {
+                if (BuildConfig.RXJAVA) { // Todo: What is RXJAVA?
                     intent = new Intent(MainActivity.this, RxConnectActivity.class);
                 } else {
                     intent = new Intent(MainActivity.this, ConnectActivity.class);
@@ -167,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
 
-        //Remove ScannerListener
+        // Remove ScannerListener
         mDeviceScanner.removeScannerListener(mScannerListener);
     }
 
@@ -200,8 +210,8 @@ public class MainActivity extends AppCompatActivity {
      * Start scan
      */
     private void startScanning() {
-        mDevices.clear();
-        mAdapter.notifyDataSetChanged();
+        mDevices.clear(); // Reset device list to zero
+        mAdapter.notifyDataSetChanged(); // Refresh all views
 
         mDeviceScanner.start();
         mSwipeRefreshLayout.setRefreshing(true);
