@@ -29,19 +29,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ConnectActivity" />
-        <activity android:name=".alarmclock.AlarmClocksActivity" />
-        <activity android:name=".alarmclock.AlarmClockEditActivity" />
-        <activity android:name=".alarmclock.AlarmClockRepeatActivity" />
-        <activity android:name=".notification.NotificationConfigActivity" />
-        <activity android:name=".realtimedata.RealTimeDataActivity" />
-        <activity android:name=".cameracontrol.CameraControlActivity" />
-        <activity android:name=".syncdata.SyncDataActivity" />
-        <activity android:name=".config.ConfigActivity" />
-        <activity android:name=".dfu.DfuActivity" />
-        <activity android:name=".realtimedata.EcgActivity" />
-        <activity android:name=".rxjava.RxConnectActivity" />
-
+        <activity android:name=".ConnectActivity"/>
+        <activity android:name=".alarmclock.AlarmClocksActivity"/>
+        <activity android:name=".alarmclock.AlarmClockEditActivity"/>
+        <activity android:name=".alarmclock.AlarmClockRepeatActivity"/>
+        <activity android:name=".notification.NotificationConfigActivity"/>
+        <activity android:name=".realtimedata.RealTimeDataActivity"/>
+        <activity android:name=".cameracontrol.CameraControlActivity"/>
+        <activity android:name=".syncdata.SyncDataActivity"/>
+        <activity android:name=".config.ConfigActivity"/>
+        <activity android:name=".dfu.DfuActivity"/>
+        <activity android:name=".realtimedata.EcgActivity"/>
+        <activity android:name=".rxjava.RxConnectActivity"/>
+        <activity android:name=".syncdata.SleepDataActivity"/>
         <service
             android:name=".notification.CaptureNotificationService"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
